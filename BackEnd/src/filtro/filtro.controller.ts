@@ -49,7 +49,7 @@ export class FiltroController {
         return this.filtroService.getMatricula()
     }
 
-    @Get('customizado')
-    getDados():
+    // @Get('customizado')
+    // getDados():
 
 }
