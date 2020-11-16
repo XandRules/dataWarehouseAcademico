@@ -30,4 +30,15 @@ export type Matricula = {
     matricula_situacao: string
 }
 
+export class Estatisticas {
+    idade?: Idade[];
+    estado?: Estado[];
+    etnia?: Etnia[];
+    renda_familiar?: RendaFamiliar[];
+    escola_origem?: EscolaOrigem[];
+    sexo?: Sexo[];
+    matricula_situacao?: Matricula[];
+    total?: Number;
+}
+
 
