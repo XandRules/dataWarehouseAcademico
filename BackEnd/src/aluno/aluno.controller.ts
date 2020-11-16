@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req } from '@nestjs/common';
 import { AlunoService } from './aluno.service';
-import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal } from './types';
+import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda } from './types';
 
 @Controller('aluno')
 export class AlunoController {
@@ -31,6 +31,26 @@ export class AlunoController {
     @Get('matriculasituacao')
     getMatriculaSituacaoTotal(): Promise<MatriculaTotal[]>{
         return this.alunoService.matriculaSituacao()
+    }
+
+    @Get('matriculasituacaoporrenda')
+    getMatriculaSituacaoPorRenda(@Query() query: any): Promise<SituacaoMatriculaPorRenda[]>{ 
+        return this.alunoService.situacaoMatriculaPorRendaFamiliar(query.status)
+    }
+
+    @Get('matriculasituacaoestado')
+    getMatriculaSituacaoEstado(): Promise<SituacaoMatriculaEstado[]>{
+        return this.alunoService.situacaoMatriculaPorStatus()
+    }
+
+    @Get('matriculasituacaoescolaorigem')
+    getMatriculaSituacaoEscolaOrigem(): Promise<SituacaoMatriculaEscolaOrigem[]>{
+        return this.alunoService.situacaoMatriculaEscolaOrigem()
+    }
+
+    @Get('matriculasituacaoporescolaorigem')
+    getMatriculaSituacaoPorEscolaOrigem(@Query() query: any): Promise<SituacaoMatriculaEscolaOrigem[]>{
+        return this.alunoService.situacaoMatriculaPorEscolaOrigem(query.status)
     }
     
 }

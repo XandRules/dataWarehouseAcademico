@@ -17,3 +17,21 @@ export class MatriculaTotal {
     matricula_situacao?: string;
     total?: Number;
 }
+
+export class SituacaoMatriculaEscolaOrigem {
+    escola_origem?: string;
+    matricula_situacao:string;
+    total?: Number;
+}
+
+export class SituacaoMatriculaPorRenda {
+    rendaFamiliar?: string;
+    matricula_situacao:string;
+    total?: Number;
+}
+
+export class SituacaoMatriculaEstado {
+    cidade?: string;
+    estado:string;
+    total?: Number;
+}
