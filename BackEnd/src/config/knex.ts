@@ -4,9 +4,9 @@ export const Knex = knex({
     client: 'pg',
     connection: {
         host: 'localhost',
-        port: 5433,
+        port: 5432,
         user: 'postgres',
-        password: 'docker',
+        password: 'postgres',
         database: 'dw_alunos',
     },
 });

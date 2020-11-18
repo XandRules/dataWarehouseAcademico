@@ -1,4 +1,4 @@
-var appfai = angular.module('appfai', ['chart.js']);
+var appfai = angular.module('appfai', []);
 
 appfai.constant('config', {
     baseUrl: "http://127.0.0.1:3000",

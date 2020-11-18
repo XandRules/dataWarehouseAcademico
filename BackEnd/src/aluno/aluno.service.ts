@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Knex } from "src/config/knex";
-import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda } from "./types";
+import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda, SituacaoMatriculaSexo } from "./types";
 
 @Injectable()
 export class AlunoService{
@@ -69,10 +69,17 @@ export class AlunoService{
       
     situacaoMatriculaPorStatus(): Promise<SituacaoMatriculaEstado[]> {
         return Knex('alunos')
-        .select('estado')
-        .count('* as total').where('matricula_situacao','Matriculado')
-        .groupBy('estado');
+        .select('estado','matricula_situacao')
+        .count('* as total')
+        .groupBy('estado','matricula_situacao');
     }
 
+
+    situacaoMatriculaPorSexo(): Promise<SituacaoMatriculaSexo[]> {
+        return Knex('alunos')
+        .select('sexo')
+        .count('* as total')
+        .groupBy('sexo');
+    }
 
 }

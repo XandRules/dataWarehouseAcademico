@@ -6,7 +6,6 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
     $scope.visualizacao = 0;
     $scope.dados;
 
-    console.log('iniciou o controller');
 
     $scope.getRendaFamiliar = function(){
         GraficoModel.getRendaFamiliar().then(function(response){
@@ -20,20 +19,53 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         GraficoModel.getEtnia().then(function(response){
             console.log(response.data);
             $scope.dados = response.data;
+            $scope.buscarDados();
+        })
+    }
+
+    $scope.getSituacaoMatricula = function(){
+        GraficoModel.getSituacaoMatricula().then(function(response){
+            console.log(response.data);
+            $scope.dados = response.data;
+            $scope.buscarDados();
+        })
+    }
+
+    $scope.getSituacaoMatriculaRenda = function(){
+        GraficoModel.getSituacaoMatriculaRenda().then(function(response){
+            console.log(response.data);
+            $scope.dados = response.data;
+            $scope.buscarDados();
+        })
+    }
+
+    $scope.getSituacaoMatriculaEstado = function(){
+        GraficoModel.getSituacaoMatriculaEstado().then(function(response){
+            console.log(response.data);
+            $scope.dados = response.data;
+            $scope.buscarDados();
+        })
+    }
+
+    $scope.getSituacaoMatriculaSexo = function(){
+        GraficoModel.getSituacaoMatriculaSexo().then(function(response){
+            console.log(response.data);
+            $scope.dados = response.data;
+            $scope.buscarDados();
         })
     }
 
     $scope.data = {
         opcoes_de_filtro: [
 
-            {id: "0" , name : 'Renda Total'},
-            {id: "1" , name : 'Situação da Matricula'},
-            {id: "2" , name : 'Situação da Matricula Por Renda'},
-            {id: "3" , name : 'Situação da Matricula Por Estado'},
-            {id: "4" , name : 'Situação da Matricula Por Sexo'},
-            {id: "5" , name : 'Etnia'},
-            {id: "6" , name : 'Sexo'},
-            {id: "7" , name : 'Estado'},
+            {id: "0" , name : 'Renda Total' , filtro: 'renda_familiar'},
+            {id: "1" , name : 'Situação da Matricula', filtro: 'matricula_situacao'},
+            {id: "2" , name : 'Situação da Matricula Por Renda', filtro: 'matricula_situacao'},
+            {id: "3" , name : 'Situação da Matricula Por Estado', filtro: 'estado'},
+            {id: "4" , name : 'Situação da Matricula Por Sexo', filtro: 'matricula_situacao'},
+            {id: "5" , name : 'Etnia', filtro: "etnia"},
+            {id: "6" , name : 'Sexo', filtro: 'sexo'},
+            {id: "7" , name : 'Estado', filtro: 'estado'},
         ],
         opcoes_de_grafico: [
 
@@ -43,23 +75,14 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
             {id: "3" , name : 'Lollipop'},
             {id: "4" , name : 'Donuts'},
             {id: "5" , name : 'Linha'},
+            {id: "6" , name : 'Barras Horizontal'},
         ],
         opcao_selecionada_grafico: {id: '0'},
         opcao_selecionada_dados: {id: '0'}  
     };
 
-    $scope.renderizarGrafico = function(tipo){
-
-        if(tipo == 'pizza'){
-
-        }else{
-
-        }
-    }
 
     $scope.buscarDados = function(){
-        console.log('filtro' , $scope.data.opcao_selecionada_dados)
-        console.log('dados', $scope.dados)
 
         let config = $scope.loadingChart($scope.data.opcao_selecionada_dados.name, $scope.dados);
           
@@ -83,28 +106,43 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         // Themes end
         
         if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Radar'){
-            $scope.radar();
+            $scope.radar($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
         }else if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Pizza'){
-            $scope.pizza();
+            $scope.pizza($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
         }else if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Barras'){
-            $scope.barras();
+            $scope.barras($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
         }else if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Lollipop'){
-            $scope.lollipop();
+            $scope.lollipop($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
         }else if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Donuts'){
-            $scope.donuts();
+            $scope.donuts($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
         }else if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Linha'){
-            $scope.linha();
-        }    
+            $scope.linha($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
+        }else if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Barras Horizontal'){
+            $scope.barraHorizontal($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
+        }     
 
     }
 
 
     $scope.alterarVisualizacao = function(){
         console.log('visualização' ,  $scope.data.opcao_selecionada_grafico)
-        $scope.buscarDados();
+
+        $scope.buscarDados()
     }
 
-    $scope.barras = function(){
+    $scope.alterarFiltro = function(){
+        if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Renda Total"){
+            $scope.getRendaFamiliar();
+        }else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Etnia"){
+            $scope.getEtnia();
+        }else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Situação da Matricula"){
+            $scope.getSituacaoMatricula();
+        }else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Situação da Matricula Por Estado"){
+            $scope.getSituacaoMatriculaEstado();
+        }
+    }
+
+    $scope.barras = function(filtro){
         var chart = am4core.create("chartdiv", am4charts.XYChart);
 
     chart.data = $scope.dados;
@@ -112,11 +150,14 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
     chart.padding(40, 40, 40, 40);
 
     var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = filtro;
     categoryAxis.renderer.grid.template.location = 0;
-    categoryAxis.dataFields.category = "renda_familiar";
-    categoryAxis.renderer.minGridDistance = 60;
-    categoryAxis.renderer.inversed = true;
-    categoryAxis.renderer.grid.template.disabled = true;
+    categoryAxis.renderer.minGridDistance = 30;
+    categoryAxis.renderer.labels.template.horizontalCenter = "right";
+    categoryAxis.renderer.labels.template.verticalCenter = "middle";
+    categoryAxis.renderer.labels.template.rotation = 270;
+    categoryAxis.tooltip.disabled = true;
+    categoryAxis.renderer.minHeight = 110;
 
     var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.min = 0;
@@ -125,7 +166,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
     //valueAxis.rangeChangeDuration = 1500;
 
     var series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.categoryX = "renda_familiar";
+    series.dataFields.categoryX = filtro;
     series.dataFields.valueY = "total";
     series.tooltipText = "{valueY.value}"
     series.columns.template.strokeOpacity = 0;
@@ -148,7 +189,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
     categoryAxis.sortBySeries = series;
     }
 
-    $scope.pizza = function(){
+    $scope.pizza = function(filtro){
         var chart = am4core.create("chartdiv", am4charts.PieChart);
 
         // Add data
@@ -157,7 +198,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         // Add and configure Series
         var pieSeries = chart.series.push(new am4charts.PieSeries());
         pieSeries.dataFields.value = "total";
-        pieSeries.dataFields.category = "renda_familiar";
+        pieSeries.dataFields.category = filtro;
         pieSeries.slices.template.stroke = am4core.color("#fff");
         pieSeries.slices.template.strokeWidth = 2;
         pieSeries.slices.template.strokeOpacity = 1;
@@ -168,7 +209,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         pieSeries.hiddenState.properties.startAngle = -90;
     }
 
-    $scope.radar = function(){
+    $scope.radar = function(filtro){
         var chart = am4core.create("chartdiv", am4charts.RadarChart);
         
         chart.data = $scope.dados;
@@ -177,7 +218,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         
         var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
         categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.dataFields.category = "renda_familiar";
+        categoryAxis.dataFields.category = filtro;
         categoryAxis.renderer.minGridDistance = 60;
         categoryAxis.renderer.inversed = true;
         categoryAxis.renderer.labels.template.location = 0.5;
@@ -192,7 +233,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         
         
         var series = chart.series.push(new am4charts.RadarColumnSeries());
-        series.dataFields.categoryX = "renda_familiar";
+        series.dataFields.categoryX = filtro;
         series.dataFields.valueY = "total";
         series.tooltipText = "{valueY.value}"
         series.columns.template.strokeOpacity = 0;
@@ -215,13 +256,13 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         chart.cursor.lineY.disabled = true;
     }
 
-    $scope.lollipop = function(){
+    $scope.lollipop = function(filtro){
         var chart = am4core.create("chartdiv", am4charts.XYChart);       
 
         chart.data = $scope.dados;
         var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
         categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.dataFields.category = "renda_familiar";
+        categoryAxis.dataFields.category = filtro;
         categoryAxis.renderer.minGridDistance = 15;
         categoryAxis.renderer.grid.template.location = 0.5;
         categoryAxis.renderer.grid.template.strokeDasharray = "1,3";
@@ -239,7 +280,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         valueAxis.renderer.axisFills.template.disabled = true;
 
         var series = chart.series.push(new am4charts.ColumnSeries());
-        series.dataFields.categoryX = "renda_familiar";
+        series.dataFields.categoryX = filtro;
         series.dataFields.valueY = "total";
         series.tooltipText = "{valueY.value}";
         series.sequencedInterpolation = true;
@@ -257,13 +298,13 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
         chart.scrollbarY = new am4core.Scrollbar();
     }
 
-    $scope.donuts = function(){
+    $scope.donuts = function(filtro){
         var chart = am4core.create("chartdiv", am4charts.PieChart);
 
         // Add and configure Series
         var pieSeries = chart.series.push(new am4charts.PieSeries());
         pieSeries.dataFields.value = "total";
-        pieSeries.dataFields.category = "renda_familiar";
+        pieSeries.dataFields.category = filtro;
 
         // Let's cut a hole in our Pie chart the size of 30% the radius
         chart.innerRadius = am4core.percent(30);
@@ -309,56 +350,101 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel', func
 
     }
 
-    $scope.linha = function(){
-        // Create chart instance
+    $scope.linha = function(filtro){
         var chart = am4core.create("chartdiv", am4charts.XYChart);
 
         // Add data
         chart.data = $scope.dados;
-
+                
         // Create axes
         var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-        dateAxis.renderer.grid.template.location = 0;
-        dateAxis.renderer.minGridDistance = 50;
-
         var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        valueAxis.logarithmic = true;
-        valueAxis.renderer.minGridDistance = 20;
-
+        
         // Create series
         var series = chart.series.push(new am4charts.LineSeries());
-        series.dataFields.valueY = "total";
-        series.dataFields.dateX = "renda_familiar";
-        series.tensionX = 0.8;
-        series.strokeWidth = 3;
-
+        series.dataFields.valueY = filtro;
+        series.dataFields.dateX = "total";
+        series.tooltipText = "{value}"
+        series.strokeWidth = 2;
+        series.minBulletDistance = 15;
+        
+        // Drop-shaped tooltips
+        series.tooltip.background.cornerRadius = 20;
+        series.tooltip.background.strokeOpacity = 0;
+        series.tooltip.pointerOrientation = "vertical";
+        series.tooltip.label.minWidth = 40;
+        series.tooltip.label.minHeight = 40;
+        series.tooltip.label.textAlign = "middle";
+        series.tooltip.label.textValign = "middle";
+        
+        // Make bullets grow on hover
         var bullet = series.bullets.push(new am4charts.CircleBullet());
+        bullet.circle.strokeWidth = 2;
+        bullet.circle.radius = 4;
         bullet.circle.fill = am4core.color("#fff");
-        bullet.circle.strokeWidth = 3;
-
-        // Add cursor
+        
+        var bullethover = bullet.states.create("hover");
+        bullethover.properties.scale = 1.3;
+        
+        // Make a panning cursor
         chart.cursor = new am4charts.XYCursor();
-        chart.cursor.fullWidthLineX = true;
+        chart.cursor.behavior = "panXY";
         chart.cursor.xAxis = dateAxis;
-        chart.cursor.lineX.strokeWidth = 0;
-        chart.cursor.lineX.fill = am4core.color("#000");
-        chart.cursor.lineX.fillOpacity = 0.1;
-
-        // Add scrollbar
-        chart.scrollbarX = new am4core.Scrollbar();
-
-        // Add a guide
-        let range = valueAxis.axisRanges.create();
-        range.value = 90.4;
-        range.grid.stroke = am4core.color("#396478");
-        range.grid.strokeWidth = 1;
-        range.grid.strokeOpacity = 1;
-        range.grid.strokeDasharray = "3,3";
-        range.label.inside = true;
-        range.label.text = "Average";
-        range.label.fill = range.grid.stroke;
-        range.label.verticalCenter = "bottom";
+        chart.cursor.snapToSeries = series;
+        
+        // Create vertical scrollbar and place it before the value axis
+        chart.scrollbarY = new am4core.Scrollbar();
+        chart.scrollbarY.parent = chart.leftAxesContainer;
+        chart.scrollbarY.toBack();
+        
+        // Create a horizontal scrollbar with previe and place it underneath the date axis
+        chart.scrollbarX = new am4charts.XYChartScrollbar();
+        chart.scrollbarX.series.push(series);
+        chart.scrollbarX.parent = chart.bottomAxesContainer;
+        
+        dateAxis.start = 0.79;
+        dateAxis.keepSelection = true;
     }
+
+    $scope.barraHorizontal = function(filtro){
+
+        var chart = am4core.create("chartdiv", am4charts.XYChart);
+        chart.padding(40, 40, 40, 40);
+
+        var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.dataFields.category = filtro;
+        categoryAxis.renderer.minGridDistance = 1;
+        categoryAxis.renderer.inversed = true;
+        categoryAxis.renderer.grid.template.disabled = true;
+
+        var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+        valueAxis.min = 0;
+
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.categoryY = filtro;
+        series.dataFields.valueX = "total";
+        series.tooltipText = "{valueX.value}"
+        series.columns.template.strokeOpacity = 0;
+        series.columns.template.column.cornerRadiusBottomRight = 5;
+        series.columns.template.column.cornerRadiusTopRight = 5;
+
+        var labelBullet = series.bullets.push(new am4charts.LabelBullet())
+        labelBullet.label.horizontalCenter = "left";
+        labelBullet.label.dx = 10;
+        labelBullet.label.text = "{values.valueX.workingValue.formatNumber('#.0as')}";
+        labelBullet.locationX = 1;
+
+        // as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
+        series.columns.template.adapter.add("fill", function(fill, target){
+        return chart.colors.getIndex(target.dataItem.index);
+        });
+
+        categoryAxis.sortBySeries = series;
+        chart.data = $scope.dados;
+
+
+}
 
     $scope.getRendaFamiliar();
   

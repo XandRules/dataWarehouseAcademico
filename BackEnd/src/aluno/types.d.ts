@@ -35,3 +35,8 @@ export class SituacaoMatriculaEstado {
     estado:string;
     total?: Number;
 }
+
+export class SituacaoMatriculaSexo {
+    sexo?:string;
+    total?: Number;
+}

@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, Req } from '@nestjs/common';
 import { AlunoService } from './aluno.service';
-import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda } from './types';
+import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda, SituacaoMatriculaSexo } from './types';
 
 @Controller('aluno')
 export class AlunoController {
@@ -41,6 +41,11 @@ export class AlunoController {
     @Get('matriculasituacaoestado')
     getMatriculaSituacaoEstado(): Promise<SituacaoMatriculaEstado[]>{
         return this.alunoService.situacaoMatriculaPorStatus()
+    }
+
+    @Get('matriculasituacaosexo')
+    getMatriculaSituacaoSexo(): Promise<SituacaoMatriculaSexo[]>{
+        return this.alunoService.situacaoMatriculaPorSexo()
     }
 
     @Get('matriculasituacaoescolaorigem')

@@ -18,10 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-  <script src="node_modules/angular/angular.min.js"></script>
-  <script src="node_modules/chart.js/dist/Chart.min.js"></script>
-  <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js" integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA==" crossorigin="anonymous"></script>
   <script src="module/app.js"></script>
   <script src="controllers/grafico.controller.js"></script>
   <script src="factories/grafico.factory.js"></script>
@@ -122,7 +119,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <label>Selecionar Filtro</label>
                       <select class="form-control" name="filtros" id="filtros"
                           ng-options="option.name for option in data.opcoes_de_filtro track by option.id"
-                          ng-model="data.opcao_selecionada_dados" ng-change="buscarDados()">
+                          ng-model="data.opcao_selecionada_dados" ng-change="alterarFiltro()">
                       </select>
                     </div>
                     <div class="form-group col-lg-6">
