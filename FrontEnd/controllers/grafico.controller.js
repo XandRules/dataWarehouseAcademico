@@ -210,6 +210,11 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
         // Themes begin
         am4core.useTheme(am4themes_animated);
         // Themes end
+
+        if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Sexo Idade"){
+            $scope.data.opcao_selecionada_grafico.id = '6';
+
+        }
         
         if($scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].name == 'Radar'){
             $scope.radar($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].filtro);
@@ -242,7 +247,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
 
         if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Renda Total"){
             $scope.getRendaFamiliar();
-        }else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Etnia"){
+        }else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Etnia Total"){
             $scope.getEtnia();
         }else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == "Situação da Matricula"){
             $scope.getSituacaoMatricula();
@@ -258,11 +263,16 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
 
             $scope.data.opcoes_de_grafico[$scope.data.opcao_selecionada_grafico.id].disabled = false;
             $scope.idSexoIdade = $scope.data.opcao_selecionada_grafico.id;
+            $scope.data.opcao_selecionada_grafico.id = '6';
 
             $scope.getSexoIdade();
         }
         else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == 'Customizado'){
-            $scope.showOptions = true;            
+            $scope.showOptions = true;  
+            $scope.data.opcao_selecionada_dados.id = 0;
+            $scope.data.opcao_selecionada_grafico.id = 0;
+            $scope.getRendaFamiliar();
+
         }
 
     }
