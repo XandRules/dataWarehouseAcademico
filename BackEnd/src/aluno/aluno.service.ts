@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Knex } from "src/config/knex";
-import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda, SituacaoMatriculaSexo } from "./types";
+import { EscolaTotal, Estatisticas, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoIdadeSexo, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda, SituacaoMatriculaSexo } from "./types";
 
 @Injectable()
 export class AlunoService{
@@ -50,14 +50,6 @@ export class AlunoService{
         .groupBy('matricula_situacao','renda_familiar');
     }
 
-    situacaoMatriculaEscolaOrigem(): Promise<SituacaoMatriculaEscolaOrigem[]> {
-        return Knex('alunos')
-        .select('matricula_situacao','escola_origem')
-        .count('* as total')
-        .groupBy('matricula_situacao','escola_origem');
-    }
-
-
     //dados agrupados por renda Familiar retornando o tatal de cada faixa de renda das familias da tabela alunos
     situacaoMatriculaPorEscolaOrigem(status): Promise<SituacaoMatriculaEscolaOrigem[]> {
         return Knex('alunos')
@@ -66,20 +58,89 @@ export class AlunoService{
         .groupBy('matricula_situacao','escola_origem');
     }
 
-      
-    situacaoMatriculaPorStatus(): Promise<SituacaoMatriculaEstado[]> {
+    situacaoMatriculaEscolaOrigem(): Promise<SituacaoMatriculaEscolaOrigem[]> {
         return Knex('alunos')
-        .select('estado','matricula_situacao')
+        .select('matricula_situacao','escola_origem')
         .count('* as total')
-        .groupBy('estado','matricula_situacao');
+        .groupBy('matricula_situacao','escola_origem');
+    }
+
+    //dados agrupados por renda Familiar retornando o tatal de cada faixa de renda das familias da tabela alunos
+    situacaoSexoIdade(): Promise<SituacaoIdadeSexo[]> {
+        return Knex('alunos')
+            .select('sexo', Knex.raw('EXTRACT (YEAR FROM AGE(cast(data_nascimento as date))) as idade'))
+            .count('* as total')
+            .groupBy('sexo','idade');
+    }
+      
+    situacaoEstado(): Promise<SituacaoMatriculaEstado[]> {
+        return Knex('alunos')
+        .select('estado')
+        .count('* as total')
+        .groupBy('estado');
     }
 
 
-    situacaoMatriculaPorSexo(): Promise<SituacaoMatriculaSexo[]> {
+    situacaoSexo(): Promise<SituacaoMatriculaSexo[]> {
         return Knex('alunos')
         .select('sexo')
         .count('* as total')
         .groupBy('sexo');
     }
 
+
+    customizado(etnia , sexo, renda_familiar, estado , matricula_situacao,escola_origem): Promise<Estatisticas[]> {
+
+        if(etnia != 'null' && sexo != 'null' && renda_familiar != 'null' && estado != 'null' && matricula_situacao != 'null' && escola_origem != 'null'){
+            return Knex('alunos')
+            .select('matricula_situacao')
+            .count('* as total')
+            .groupBy('matricula_situacao');
+        }else{
+
+            if(etnia == 'null'){
+                etnia = 'etnia is not null'
+            }else{
+                etnia = `etnia = '${etnia}'`;
+            }
+
+            if(sexo == 'null'){
+                sexo = 'sexo is not null'
+            }else{
+                sexo = `sexo = '${sexo}'`;
+            }
+
+            if(renda_familiar == 'null'){
+                renda_familiar = 'renda_familiar is not null'
+            }else{
+                renda_familiar = `renda_familiar = '${renda_familiar}'`;
+            }
+
+            if(estado == 'null'){
+                estado = 'estado is not null'
+            }else{
+                estado = `estado = '${estado}'`;
+            }
+
+            if(matricula_situacao == 'null'){
+                matricula_situacao = 'matricula_situacao is not null'
+            }else{
+                matricula_situacao = `matricula_situacao = '${matricula_situacao}'`;
+            }
+
+            if(escola_origem == 'null'){
+                escola_origem = 'escola_origem is not null'
+            }else{
+                escola_origem = `escola_origem = '${escola_origem}'`;
+            }
+
+            return Knex('alunos')
+            .select('matricula_situacao')
+            .count('* as total').whereRaw(`${etnia} and ${sexo} and ${renda_familiar} and ${estado} and ${matricula_situacao} and ${escola_origem}`)
+            .groupBy('matricula_situacao');
+
+
+        }
+       
+    }
 }

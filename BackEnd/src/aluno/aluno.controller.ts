@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, Req } from '@nestjs/common';
 import { AlunoService } from './aluno.service';
-import { EscolaTotal, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda, SituacaoMatriculaSexo } from './types';
+import { EscolaTotal, Estatisticas, EtniaTotal, MatriculaTotal, RendaTotal, SituacaoIdadeSexo, SituacaoMatriculaEscolaOrigem, SituacaoMatriculaEstado, SituacaoMatriculaPorRenda, SituacaoMatriculaSexo } from './types';
 
 @Controller('aluno')
 export class AlunoController {
@@ -38,14 +38,14 @@ export class AlunoController {
         return this.alunoService.situacaoMatriculaPorRendaFamiliar(query.status)
     }
 
-    @Get('matriculasituacaoestado')
+    @Get('estadototal')
     getMatriculaSituacaoEstado(): Promise<SituacaoMatriculaEstado[]>{
-        return this.alunoService.situacaoMatriculaPorStatus()
+        return this.alunoService.situacaoEstado()
     }
 
-    @Get('matriculasituacaosexo')
-    getMatriculaSituacaoSexo(): Promise<SituacaoMatriculaSexo[]>{
-        return this.alunoService.situacaoMatriculaPorSexo()
+    @Get('sexototal')
+    getSexo(): Promise<SituacaoMatriculaSexo[]>{
+        return this.alunoService.situacaoSexo()
     }
 
     @Get('matriculasituacaoescolaorigem')
@@ -57,5 +57,20 @@ export class AlunoController {
     getMatriculaSituacaoPorEscolaOrigem(@Query() query: any): Promise<SituacaoMatriculaEscolaOrigem[]>{
         return this.alunoService.situacaoMatriculaPorEscolaOrigem(query.status)
     }
+
+    @Get('sexoidade')
+    getIdadePorSexo(): Promise<SituacaoIdadeSexo[]>{        
+        return this.alunoService.situacaoSexoIdade()
+    }
+
+    @Get('customizado')
+    getDados(@Query() query: any): Promise<Estatisticas[]>{
+        console.log(query);
+
+        return this.alunoService.customizado(query.etnia, query.sexo, query.renda_familiar,query.estado,query.matricula_situacao, query.escola_origem);
+
+
+    }
+
     
 }

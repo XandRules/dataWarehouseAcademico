@@ -22,6 +22,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="module/app.js"></script>
   <script src="controllers/grafico.controller.js"></script>
   <script src="factories/grafico.factory.js"></script>
+  <script src="factories/filtro.factory.js"></script>
 
   <!-- Resources -->
   <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
@@ -130,6 +131,52 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       </select>
                     </div>
                   </div>
+
+                  <div class="row" ng-hide="!showOptions">
+
+                    <div class="form-group col-lg-2">
+                      <label>Etnia</label>
+                      <select class="form-control" name="etniaForm" id="etniaForm"
+                          ng-options="option.etnia for option in etnia"
+                          ng-model="etniaSelecionado" ng-change="getCustomizado()">
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                      <label>Sexo</label>
+                      <select class="form-control" name="sexoForm" id="sexoForm"
+                          ng-options="option.sexo for option in sexo"
+                          ng-model="sexoSelecionado" ng-change="getCustomizado()">
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                      <label>Situação da Matricula</label>
+                      <select class="form-control" name="matriculaForm" id="matriculaForm"
+                          ng-options="option.matricula_situacao for option in matricula"
+                          ng-model="matriculaSelecionado" ng-change="getCustomizado()">                         
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                      <label>Renda Familiar</label>
+                      <select class="form-control" name="rendaForm" id="rendaForm"
+                          ng-options="option.renda_familiar for option in renda"
+                          ng-model="rendaSelecionado" ng-change="getCustomizado()">
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                      <label>Escola Origem</label>
+                      <select class="form-control" name="escolaForm" id="escolaForm"
+                          ng-options="option.escola_origem for option in escola "
+                          ng-model="escolaSelecionado" ng-change="getCustomizado()">
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                      <label>Estado</label>
+                      <select class="form-control" name="estadoForm" id="estadoForm"
+                          ng-options="option.estado for option in estado"
+                          ng-model="estadoSelecionado" ng-change="getCustomizado()">
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -141,13 +188,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">CHARTS</h3>
-      
-                <div class="card-tools">
+                <div class="card-tools">                  
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                     <i class="fas fa-minus"></i></button>
                 </div>
               </div>
               <div class="card-body">
+                <h3 ng-bind="titulo"> {{titulo}}</h3>
                 <div id="chartdiv"></div>
                 
               </div>

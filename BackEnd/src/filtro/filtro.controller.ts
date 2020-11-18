@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { Estatisticas } from 'src/aluno/types';
 import { FiltroService } from './filtro.service';
 import { Etnia, Sexo ,EscolaOrigem,Idade, RendaFamiliar, Estado, Cidade, Matricula } from './types';
 
@@ -8,6 +9,7 @@ export class FiltroController {
     constructor(
         private readonly filtroService: FiltroService
     ){}
+
 
     @Get('etnia')
     getEtnia(): Promise<Etnia[]>{
@@ -19,12 +21,12 @@ export class FiltroController {
         return this.filtroService.getSexo()
     }
 
-    @Get('escolaorigem')
+    @Get('escola')
     getEscolaOrigem(): Promise<EscolaOrigem[]>{
         return this.filtroService.getEscolaOrigem()
     }
 
-    @Get('rendafamiliar')
+    @Get('renda')
     getRendaFamiliar(): Promise<RendaFamiliar[]>{
         return this.filtroService.getRendaFamiliar()
     }
@@ -48,8 +50,5 @@ export class FiltroController {
     getMatrocula(): Promise<Matricula[]>{
         return this.filtroService.getMatricula()
     }
-
-    // @Get('customizado')
-    // getDados():
 
 }

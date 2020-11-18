@@ -24,6 +24,12 @@ export class SituacaoMatriculaEscolaOrigem {
     total?: Number;
 }
 
+export class SituacaoIdadeSexo {
+    idade?: string;
+    masculino?:string;
+    feminino?:string;    
+}
+
 export class SituacaoMatriculaPorRenda {
     rendaFamiliar?: string;
     matricula_situacao:string;
@@ -39,4 +45,15 @@ export class SituacaoMatriculaEstado {
 export class SituacaoMatriculaSexo {
     sexo?:string;
     total?: Number;
+}
+
+export class Estatisticas {
+    idade?:string;
+    estado?:string;
+    etnia?:string;
+    renda_familiar?:string;
+    escola_origem?:string;
+    sexo?:string;
+    matricula_situacao?:string;
+    total?:string;
 }
