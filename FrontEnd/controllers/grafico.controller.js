@@ -12,6 +12,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
     $scope.escola;
     $scope.sexo;
     $scope.renda;
+    $scope.showMessage = false;
     $scope.idSexoIdade;
     $scope.matricula = {
         matricula_situacao : 'Nenhum status'
@@ -190,7 +191,13 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
 
     $scope.buscarDados = function(){
 
-        let config = $scope.loadingChart($scope.data.opcao_selecionada_dados.name, $scope.dados);
+        if($scope.dados.length == 0){
+            $scope.showMessage = true;
+        }else{
+            $scope.showMessage = false;
+        }
+        $scope.loadingChart($scope.data.opcao_selecionada_dados.name, $scope.dados);
+        $scope.$apply();
           
     }
 
@@ -269,9 +276,7 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
         }
         else if($scope.data.opcoes_de_filtro[$scope.data.opcao_selecionada_dados.id].name == 'Customizado'){
             $scope.showOptions = true;  
-            $scope.data.opcao_selecionada_dados.id = 0;
-            $scope.data.opcao_selecionada_grafico.id = 0;
-            $scope.getRendaFamiliar();
+            $scope.getCustomizado();
 
         }
 
@@ -281,6 +286,8 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
         var chart = am4core.create("chartdiv", am4charts.XYChart);
 
     chart.data = $scope.dados;
+
+    console.log(filtro)
 
     chart.padding(40, 40, 40, 40);
 
@@ -326,6 +333,8 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
 
     $scope.pizza = function(filtro){
         var chart = am4core.create("chartdiv", am4charts.PieChart);
+
+        console.log(filtro)
 
         // Add data
         chart.data = $scope.dados
@@ -730,8 +739,6 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
             return a.age < b.age ? -1 : a.age > b.age ? 1 : 0;
         });
 
-        console.log("dataM", dataM);
-        console.log("dataF", dataF);
         // Add data
         chart.data = dataFinal;
 
