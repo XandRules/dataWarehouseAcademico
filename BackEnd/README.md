@@ -28,13 +28,18 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Instalação
 
 ```bash
-$ npm install
+$ rodar npm install para instalar as dependências 
+```
+```bash
+ Na pasta /src/config configurar as credenciais do banco de dados.  
 ```
 
-## Running the app
+### É necessário restaurar o banco de dados, para isso dentro do diretório DataBase possui um arquivo dw_alunos.backup. 
+
+## Rodar o app
 
 ```bash
 # development
