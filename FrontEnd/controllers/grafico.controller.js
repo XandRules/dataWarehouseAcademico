@@ -93,12 +93,13 @@ appfai.controller('GraficoController', ['$scope','$filter', 'GraficoModel','Filt
     $scope.getCustomizado = function(){
 
         let data = 
-            `?etnia=${$scope.etniaSelecionado == null ? null : $scope.etniaSelecionado.etnia}`+
-            `&estado=${$scope.estadoSelecionado == null ? null :  $scope.estadoSelecionado.estado}`+
-            `&sexo=${$scope.sexoSelecionado == null ? null : $scope.sexoSelecionado.sexo}`+
-            `&escola_origem=${$scope.escolaSelecionado == null ? null :$scope.escolaSelecionado.escola_origem}`+
-            `&matricula_situacao=${$scope.matriculaSelecionado == null ? null : $scope.matriculaSelecionado.matricula_situacao}`+
-            `&renda_familiar=${$scope.rendaSelecionado == null? null :  $scope.rendaSelecionado.renda_familiar}`
+            `?etnia=${$scope.etniaSelecionado == null ? null : $scope.etniaSelecionado.etnia == 'Remover Filtro' ? null : $scope.etniaSelecionado.etnia}`+
+            `&estado=${$scope.estadoSelecionado == null ? null :  $scope.estadoSelecionado.estado == 'Remover Filtro' ? null : $scope.estadoSelecionado.estado}`+
+            `&sexo=${$scope.sexoSelecionado == null ? null : $scope.sexoSelecionado.sexo == 'Remover Filtro' ? null : $scope.sexoSelecionado.sexo}`+
+            `&escola_origem=${$scope.escolaSelecionado == null ? null :$scope.escolaSelecionado.escola_origem == 'Remover Filtro' ? null : $scope.escolaSelecionado.escola_origem}`+
+            `&matricula_situacao=${$scope.matriculaSelecionado == null ? null : $scope.matriculaSelecionado.matricula_situacao == 'Remover Filtro' ? null : $scope.matriculaSelecionado.matricula_situacao}`+
+            `&renda_familiar=${$scope.rendaSelecionado == null? null :  $scope.rendaSelecionado.renda_familiar == 'Remover Filtro' ? null : $scope.rendaSelecionado.renda_familiar}`
+    
             
         GraficoModel.customizado(data).then(function(response){
             console.log(response.data);
